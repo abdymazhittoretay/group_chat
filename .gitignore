@@ -3,6 +3,9 @@
 *.log
 *.pyc
 *.swp
+firebase_options.dart
+firebase.json
+google-services.json
 .DS_Store
 .atom/
 .build/
