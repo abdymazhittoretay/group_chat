@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:group_chat/pages/home_page.dart';
 import 'package:group_chat/services/auth.dart';
 
 class LoginPage extends StatefulWidget {
@@ -44,8 +45,9 @@ class _LoginPageState extends State<LoginPage> {
                 ElevatedButton(
                   onPressed: () async {
                     await signIn(
-                      email: _emailController.text,
-                      password: _passwordController.text,
+                      context,
+                      _emailController.text,
+                      _passwordController.text,
                     );
                     _emailController.clear();
                     _passwordController.clear();
@@ -60,13 +62,23 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Future<void> signIn({required String email, required String password}) async {
+  Future<void> signIn(
+    BuildContext context,
+    String email,
+    String password,
+  ) async {
     if (email.isNotEmpty && password.isNotEmpty) {
       try {
         await Auth().signInWithEmailAndPassword(
           email: _emailController.text,
           password: _passwordController.text,
         );
+        if (context.mounted) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => HomePage()),
+          );
+        }
       } catch (e) {
         print(e);
       }
