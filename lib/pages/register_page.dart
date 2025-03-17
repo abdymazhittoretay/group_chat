@@ -1,23 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:group_chat/pages/home_page.dart';
-import 'package:group_chat/pages/register_page.dart';
+import 'package:group_chat/pages/login_page.dart';
 import 'package:group_chat/services/auth.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Login Page"), centerTitle: true),
+      appBar: AppBar(title: Text("Register Page"), centerTitle: true),
       body: Center(
         child: SingleChildScrollView(
           child: Padding(
@@ -43,28 +45,38 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 SizedBox(height: 16.0),
+                TextField(
+                  controller: _confirmPasswordController,
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    label: Text("Confirm password"),
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                SizedBox(height: 16.0),
                 ElevatedButton(
                   onPressed: () async {
-                    await signIn(
+                    await register(
                       context,
                       _emailController.text,
                       _passwordController.text,
+                      _confirmPasswordController.text,
                     );
                     _emailController.clear();
                     _passwordController.clear();
                   },
-                  child: Text("Login"),
+                  child: Text("Register"),
                 ),
                 SizedBox(height: 16.0),
                 GestureDetector(
                   onTap: () {
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => RegisterPage()),
+                      MaterialPageRoute(builder: (context) => LoginPage()),
                     );
                   },
                   child: Text(
-                    "Don't have an account? Register!",
+                    "Already have an account? Login!",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       decoration: TextDecoration.underline,
@@ -79,14 +91,18 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Future<void> signIn(
+  Future<void> register(
     BuildContext context,
     String email,
     String password,
+    String confirmPassword,
   ) async {
-    if (email.isNotEmpty && password.isNotEmpty) {
+    if ((email.isNotEmpty &&
+            password.isNotEmpty &&
+            confirmPassword.isNotEmpty) &&
+        password == confirmPassword) {
       try {
-        await Auth().signInWithEmailAndPassword(
+        await Auth().registerWithEmailAndPassword(
           email: _emailController.text,
           password: _passwordController.text,
         );
