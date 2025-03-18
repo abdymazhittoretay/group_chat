@@ -97,7 +97,9 @@ class _RegisterPageState extends State<RegisterPage> {
     String password,
     String confirmPassword,
   ) async {
+    loadDialog(context);
     if (password != confirmPassword) {
+      Navigator.pop(context);
       errorDialog("Passwords dont match!", context);
     }
     if ((email.isNotEmpty &&
@@ -109,6 +111,9 @@ class _RegisterPageState extends State<RegisterPage> {
           email: _emailController.text,
           password: _passwordController.text,
         );
+        _emailController.clear();
+        _passwordController.clear();
+        _confirmPasswordController.clear();
         if (context.mounted) {
           Navigator.pushReplacement(
             context,
@@ -116,7 +121,16 @@ class _RegisterPageState extends State<RegisterPage> {
           );
         }
       } on FirebaseAuthException catch (e) {
-        if (context.mounted) errorDialog(e.code, context);
+        if (context.mounted) {
+          Navigator.pop(context);
+          errorDialog(e.code, context);
+        }
+      }
+    }
+    if (email.isEmpty || password.isEmpty) {
+      if (context.mounted) {
+        Navigator.pop(context);
+        errorDialog("One of the fields is empty", context);
       }
     }
   }

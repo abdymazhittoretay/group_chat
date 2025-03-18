@@ -14,3 +14,10 @@ void errorDialog(String error, BuildContext context) {
         ),
   );
 }
+
+void loadDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (context) => Center(child: CircularProgressIndicator()),
+  );
+}

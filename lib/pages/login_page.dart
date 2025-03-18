@@ -84,12 +84,15 @@ class _LoginPageState extends State<LoginPage> {
     String email,
     String password,
   ) async {
+    loadDialog(context);
     if (email.isNotEmpty && password.isNotEmpty) {
       try {
         await Auth().signInWithEmailAndPassword(
           email: _emailController.text,
           password: _passwordController.text,
         );
+        _emailController.clear();
+        _passwordController.clear();
         if (context.mounted) {
           Navigator.pushReplacement(
             context,
@@ -97,8 +100,14 @@ class _LoginPageState extends State<LoginPage> {
           );
         }
       } on FirebaseAuthException catch (e) {
-        if (context.mounted) errorDialog(e.code, context);
+        if (context.mounted) {
+          Navigator.pop(context);
+          errorDialog(e.code, context);
+        }
       }
+    } else {
+      Navigator.pop(context);
+      errorDialog("One of the fields is empty", context);
     }
   }
 }
