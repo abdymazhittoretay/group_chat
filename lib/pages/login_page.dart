@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:group_chat/helper/helper_functions.dart';
 import 'package:group_chat/pages/home_page.dart';
 import 'package:group_chat/pages/register_page.dart';
 import 'package:group_chat/services/auth.dart';
@@ -50,8 +52,6 @@ class _LoginPageState extends State<LoginPage> {
                       _emailController.text,
                       _passwordController.text,
                     );
-                    _emailController.clear();
-                    _passwordController.clear();
                   },
                   child: Text("Login"),
                 ),
@@ -96,8 +96,8 @@ class _LoginPageState extends State<LoginPage> {
             MaterialPageRoute(builder: (context) => HomePage()),
           );
         }
-      } catch (e) {
-        print(e);
+      } on FirebaseAuthException catch (e) {
+        if (context.mounted) errorDialog(e.code, context);
       }
     }
   }

@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:group_chat/helper/helper_functions.dart';
 import 'package:group_chat/pages/home_page.dart';
 import 'package:group_chat/pages/login_page.dart';
 import 'package:group_chat/services/auth.dart';
@@ -62,8 +64,6 @@ class _RegisterPageState extends State<RegisterPage> {
                       _passwordController.text,
                       _confirmPasswordController.text,
                     );
-                    _emailController.clear();
-                    _passwordController.clear();
                   },
                   child: Text("Register"),
                 ),
@@ -97,6 +97,9 @@ class _RegisterPageState extends State<RegisterPage> {
     String password,
     String confirmPassword,
   ) async {
+    if (password != confirmPassword) {
+      errorDialog("Passwords dont match!", context);
+    }
     if ((email.isNotEmpty &&
             password.isNotEmpty &&
             confirmPassword.isNotEmpty) &&
@@ -112,8 +115,8 @@ class _RegisterPageState extends State<RegisterPage> {
             MaterialPageRoute(builder: (context) => HomePage()),
           );
         }
-      } catch (e) {
-        print(e);
+      } on FirebaseAuthException catch (e) {
+        if (context.mounted) errorDialog(e.code, context);
       }
     }
   }
