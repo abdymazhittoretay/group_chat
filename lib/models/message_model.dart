@@ -1,6 +1,6 @@
 class MessageModel {
   final String message;
-  final String sentBy;
+  final String? sentBy;
   final DateTime date;
 
   MessageModel({

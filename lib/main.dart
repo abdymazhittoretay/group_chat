@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:group_chat/firebase_options.dart';
+import 'package:group_chat/pages/home_page.dart';
 import 'package:group_chat/pages/login_page.dart';
 
 Future<void> main() async {
@@ -14,6 +15,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(debugShowCheckedModeBanner: false, home: LoginPage());
+    return MaterialApp(debugShowCheckedModeBanner: false, home: HomePage());
   }
 }
