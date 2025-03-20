@@ -95,11 +95,20 @@ class _HomePageState extends State<HomePage> {
                               child: Padding(
                                 padding: const EdgeInsets.all(16.0),
                                 child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  crossAxisAlignment:
+                                      isSentByMe
+                                          ? CrossAxisAlignment.end
+                                          : CrossAxisAlignment.start,
                                   children: [
-                                    Text("${message.sentBy!}:"),
+                                    Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Icon(Icons.person),
+                                        Text(message.sentBy!),
+                                      ],
+                                    ),
                                     SizedBox(height: 8.0),
-                                    Text("*${message.message}"),
+                                    Text(message.message),
                                   ],
                                 ),
                               ),
