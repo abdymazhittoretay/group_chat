@@ -21,7 +21,13 @@ class _LoginPageState extends State<LoginPage> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-        appBar: AppBar(title: Text("Login Page"), centerTitle: true),
+        appBar: AppBar(
+          backgroundColor: Colors.black,
+          foregroundColor: Colors.white,
+          surfaceTintColor: Colors.black,
+          title: Text("Login Page"),
+          centerTitle: true,
+        ),
         body: Center(
           child: SingleChildScrollView(
             child: Padding(
